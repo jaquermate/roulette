@@ -1,4 +1,3 @@
-var stopImageNumber = "";
 $(function(){
 
 	$('.roulette').find('img').hover(function(){
@@ -36,8 +35,7 @@ $(function(){
 	var rouletter = $('div.roulette');
 	rouletter.roulette(p);	
 	$('.stop').click(function(){
-                
-		stopImageNumber = $('.stopImageNumber').val();
+		var stopImageNumber = $('.stopImageNumber').val();
 		if(stopImageNumber == "") {
 			stopImageNumber = null;
 		}
@@ -106,7 +104,7 @@ $(function(){
 			updateStopImageNumber(imageNumber);		
 		}
 	});
-	$('#stopImageNumber').spinner('value', 3);
+	$('#stopImageNumber').spinner('value', 0);
 	updateStopImageNumber($('#stopImageNumber').spinner('value'));		
 
 	$('.image_sample').children().click(function(){
