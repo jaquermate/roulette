@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TRIVIAL</title>
+        <link rel="stylesheet" href="bootstrap.css">
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/jquery-ui.css">
+        <link rel="stylesheet" href="bootstrap-responsive.css">
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/ui-lightness/jquery-ui.css">
+        <link rel="stylesheet" href="demo.css">
+        <style>
+            .amarillo{
+                color : #ff0;
+            }
+            .miniboton{
+                width: 50px;
+                min-width: 50px;
+                height: 50px;
+                min-height: 50px;
+            }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+        <script src="demo.js"> </script>
+       
+         <script src="../roulette.js"></script>
+        <script src="preguntas01.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                     </a>-->
+
+                    <!--<a class="brand" href="./">Roulette.js</a> -->
+                    <div class="nav-collapse collapse" id="main-menu">
+                        <a class="nav pull-left" >EL TRIVIAL DE LO TRIVIAL</a>
+                        <button id="botonHacker" class="btn btn-mini nav pull-right" onclick="modoHacker();" style="width:10%; height: 100%"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="page-header" style="">
+                <h1>
+                    Escoge asignatura
+                </h1>
+            </div>
+
+            <div class="row">
+                <div class="span4">
+                    <div class="roulette_container" >
+                        <div class="roulette" style="display:none;">
+                            <img src="lengua.png"/>
+                            <img src="historia.png"/>
+                            <img src="economia.png"/>
+                            <img src="filosofia.png"/>
+                            <img src="ingles.png"/>
+                        </div>
+                        
+                    </div>
+                    <div class="btn_container">
+                        <p>
+                            <button class="btn btn-large btn-primary start"> START </button>
+                            <button class="stop btn-large btn btn-warning"> STOP </button>
+                        </p>
+                    </div>
+                    <div class="puntuacion_container">
+                        <p class="demo_label">Puntuación</p>
+                        <div id="msg">
+                            <button id="boton_puntuacion" class="btn btn-info">0</button>
+                        </div>
+                        <div class="row text-center" id="niveles">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="right_container examen_container">
+                        <p class="demo_label">Examen</p>
+                        <span class="label label-info"  style >Pregunta</span>
+                        
+                        <pre>
+                        <button id="botonPreguntas" class="btn btn-navbar" onclick="muestra()" style="width:100%;" >Mostrar preguntas</button>
+                        </pre>
+
+                        <span class="label label-info" style>Respuestas</span>
+                        <div id="divRespuestas"> <pre>
+                        <button id="botonResp1"  class="btn btn-link" onclick="compruebaResp(1, arrayPreg[0][8])" style="width:100%;"  >R1</button>
+                        <button id="botonResp2" hidden class="btn btn-link" onclick="compruebaResp(2, arrayPreg[0][8])" style="width:100%;"  >R2</button>
+                        <button id="botonResp3" hidden class="btn btn-link" onclick="compruebaResp(3, arrayPreg[0][8])" style="width:100%;"  >R3</button>
+                        <button id="botonResp4" hidden class="btn btn-link" onclick="compruebaResp(4, arrayPreg[0][8])" style="width:100%;"  >R4</button>
+                            </pre> </div>
+                        <button type="submit">OK </button><br>
+                    </div>
+                    <div id="divHacker" class="right_container">
+
+                        <p class="demo_label">Parámetros</p>
+                        <div class="speed_value param_label">
+                            <span class="param_name">Velocidad :</span> <span class="speed_param"></span>
+                        </div>
+                        <div id="speed"> </div>
+
+                        <div class="duration_value param_label">
+                            <span class="param_name">Duración :</span> <span class="duration_param"></span> sec
+                        </div>
+                        <div id="duration"> </div>
+
+                        <div class="stop_image_number_value param_label">
+                            <span class="param_name">Asignatura elegida :</span> <span class="stop_image_number_param"></span>
+                        </div>
+                        <input id="stopImageNumber" name="stopImageNumber"/>
+                        <span class="image_sample">
+                            <img data-value="0"  src="lengua.png" title="Lengua"/>
+                            <img data-value="1"  src="historia.png" title="Historia"/>
+                            <img data-value="2"  src="economia.png" title="Economia"/>
+                            <img data-value="3"  src="filosofia.png" title="Filosofía"/>
+                            <img data-value="4"  src="ingles.png" title="Inglés"/>
+                            <img data-value="-1" src="random.png" title="Aleatorio"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            var aciertos =0;
+            var fallos = 0;
+            var asignatura = String;
+            var numeroAsignatura = '0';
+            var asignaturaParada = $('.stop_image_number_param').text();
+            
+            asignatura = arrayPreg[0][0].toString()
+            numeroAsignatura = asignatura.charAt(0);
+            iniciaPartida();
+            $('#botonHacker').text("Hacker Mode");
+            cambiaBotones();
+            
+            function modoHacker() {
+                if ($('#botonHacker').text() === "Hacker Mode") {
+                    $('#divHacker').hide();
+
+                    $('#botonHacker').text("Modo Mortal");
+                } else {
+                    $('#divHacker').show();
+
+                    $('#botonHacker').text("Hacker Mode");
+                }
+                console.log($('#botonHacker').text());
+            }
+            
+            function iniciaPartida() {
+                
+                $('#botonResp1').hide(true)
+                $('#botonResp2').hide(true)
+                $('#botonResp3').hide(true)
+                $('#botonResp4').hide(true)
+                //tiene que mostrar algo para que se pueda elegir el numero de 
+                //verbos con el que se va a jugar
+                for (var i = 1; i < 11; i++) {
+                    
+                    $('#niveles').append('<div class="miniboton btn-group"> <button class="miniboton btn btn-large btn-primary" onclick="partida(' + i * 1 + ')"> ' + i * 1 + '</button></div>');
+                    if (i === 5) {
+                        $('#niveles').append('<p>'+verbos[0][0]+'</p>');
+                    }
+                }
+            }
+            function muestra(){
+                
+                $('#botonPreguntas').text(arrayPreg[0][3])
+                $('#botonResp1').show(true)
+                $('#botonResp2').show(true)
+                $('#botonResp3').show(true)
+                $('#botonResp4').show(true)
+                //$('#botonResp1').text(arrayPreg[0][4])
+                $('#botonResp1').text(stopImageNumber)
+                alert(stopImageNumber.val())
+                $('#botonResp2').text(arrayPreg[0][5])
+                $('#botonResp3').text(arrayPreg[0][6])
+                $('#botonResp4').text(arrayPreg[0][7])
+            }
+            function alerta(acierto){
+
+                if(acierto){
+                    $('#divRespuestas').append('<div class="alert alert-success"> <strong>Acierto!</strong> Enhorabuena, has respondido correctamente</div>')
+                }else $('#divRespuestas').append('<div class="alert alert-danger"> <strong>Error!</strong> Mal, mal, muy mal. Estate más atento la próxima vez</div>')
+            }
+           function compruebaResp(pulsada, buena){
+               console.log($('.stop_image_number_param').text())
+               if(pulsada === buena){
+                   alerta(true)
+                   switch(pulsada){
+                        case 1: $('#botonResp1').removeClass('btn btn-link')
+                                $('#botonResp1').addClass('btn btn-success'); break;
+                        case 2: $('#botonResp2').removeClass('btn btn-link')
+                                $('#botonResp2').addClass('btn btn-success'); break;
+                        case 3: $('#botonResp3').removeClass('btn btn-link')
+                                $('#botonResp3').addClass('btn btn-success'); break;
+                        case 4: $('#botonResp4').removeClass('btn btn-link')
+                                $('#botonResp4').addClass('btn btn-success'); break;
+                   }
+                   
+                   //$('#botonResp1').append('<button id="botonResp1"  class="btn btn-success" onclick="compruebaResp(4, arrayPreg[0][8])" style="width:100%;"  >R1</button>')
+               } else{
+                   alerta(false)
+                   switch(pulsada){
+                        case 1: $('#botonResp1').removeClass('btn btn-link')
+                                $('#botonResp1').addClass('btn btn-danger'); break;
+                        case 2: $('#botonResp2').removeClass('btn btn-link')
+                                $('#botonResp2').addClass('btn btn-danger'); break;
+                        case 3: $('#botonResp3').removeClass('btn btn-link')
+                                $('#botonResp3').addClass('btn btn-danger'); break;
+                        case 4: $('#botonResp4').removeClass('btn btn-link')
+                                $('#botonResp4').addClass('btn btn-danger'); break;
+                   }
+                   switch(buena){
+                        case 1: $('#botonResp1').removeClass('btn btn-link')
+                                $('#botonResp1').addClass('btn btn-warning'); break;
+                        case 2: $('#botonResp2').removeClass('btn btn-link')
+                                $('#botonResp2').addClass('btn btn-warning'); break;
+                        case 3: $('#botonResp3').removeClass('btn btn-link')
+                                $('#botonResp3').addClass('btn btn-warning'); break;
+                        case 4: $('#botonResp4').removeClass('btn btn-link')
+                                $('#botonResp4').addClass('btn btn-warning'); break;
+                   }
+                   
+               }
+               
+           }
+        </script>
+
+    </body>
+</html>
+
